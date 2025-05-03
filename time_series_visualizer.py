@@ -23,21 +23,25 @@ def draw_line_plot():
     ax.set_xlabel('Date')
     ax.set_ylabel('Page Views')
     ax.set_title('Daily freeCodeCamp Forum Page Views ')
-
-    print(dfs)
     # Save image and return fig (don't change this part)
     fig.savefig('line_plot.png')
     return fig
 
 def draw_bar_plot():
     # Copy and modify data for monthly bar plot
-    df_bar = None
+   df_bar = pd.read_csv('fcc-forum-pageviews.csv',parse_dates=['date'])
+    df_bar.set_index('date', inplace=True)
+    df_bar['year'] = df_bar.index.year
+    df_bar['month'] = df_bar.index.month_name()
+    df_bar['month_num'] = df_bar.index.month
+    
+    df_bar=df_bar.groupby(['year','month','month_num'])['value'].mean().reset_index()
+    df_bar=df_bar.sort_values("month_num",ascending=True)
+    print(df_bar)
 
     # Draw bar plot
-
-
-
-
+    fig, ax= plt.subplots(figsize=(10,10))
+    ax=sns.barplot(df_bar,x='year',y='value',hue='month')
 
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
