@@ -50,13 +50,33 @@ def draw_bar_plot():
 
 def draw_box_plot():
     # Prepare data for box plots (this part is done!)
+    df=pd.read_csv('fcc-forum-pageviews.csv',parse_dates=['date'])
     df_box = df.copy()
     df_box.reset_index(inplace=True)
     df_box['year'] = [d.year for d in df_box.date]
     df_box['month'] = [d.strftime('%b') for d in df_box.date]
-
+    
+    df_box=df_box.sort_values("month",ascending=True)
+    print(df_box)
     # Draw box plots (using Seaborn)
+    fig, axes=plt.subplots(1,2,sharex=True,figsize=(10,6))
+    sns.boxplot(data=df_box,x='year',y='value',ax=axes[0])
 
+    axes[0].set_title('Year-wise Box Plot (Trend)')
+    
+    axes[0].set_xticks(['2016','2017','2018','2019'])
+    axes[0].set_xlabel('Year')
+    axes[0].set_ylabel('Page Views')
+    sns.boxplot(data=df_box,x='month',y='value',ax=axes[1])
+    axes[1].set_title('Month-wise Box Plot (Seasonality)')
+    
+    
+    axes[1].set_xlabel('Month')
+    axes[1].set_ylabel('Page Views')
+    axes[1].set_xticks(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+    # Save image and return fig (don't change this part)
+    fig.savefig('box_plot.png')
+    return fig
 
 
 
