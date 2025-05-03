@@ -42,7 +42,8 @@ def draw_bar_plot():
     # Draw bar plot
     fig, ax= plt.subplots(figsize=(10,10))
     ax=sns.barplot(df_bar,x='year',y='value',hue='month')
-
+    ax.set_xlabel('Years')
+    ax.set_ylabel('Average Page Views')
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
     return fig
